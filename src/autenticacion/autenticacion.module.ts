@@ -3,9 +3,9 @@ import { AutenticacionService } from './autenticacion.service';
 import { AutenticacionController } from './autenticacion.controller';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { Usuario, UsuarioSchema } from 'src/schemas/usuario.schema';
+import { Usuario, UsuarioSchema } from '../schemas/usuario.schema';
 
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   controllers: [AutenticacionController],

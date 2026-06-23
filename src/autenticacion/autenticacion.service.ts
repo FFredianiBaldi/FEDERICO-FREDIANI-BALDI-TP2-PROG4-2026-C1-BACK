@@ -4,10 +4,10 @@ import { RegistroAutenticacionDto } from './dto/registro-autenticacion.dto';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Usuario, UsuarioDocument } from 'src/schemas/usuario.schema';
+import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 
 import * as bcrypt from 'bcrypt';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class AutenticacionService {
