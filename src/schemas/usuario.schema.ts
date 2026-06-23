@@ -55,7 +55,8 @@ export class Usuario {
     perfil?: string;
 
     @Prop({
-        default: null
+        required: false,
+        default: undefined
     })
     foto_perfil?: string;
 }

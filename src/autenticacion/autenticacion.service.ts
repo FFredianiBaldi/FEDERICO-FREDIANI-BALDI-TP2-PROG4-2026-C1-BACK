@@ -54,7 +54,7 @@ export class AutenticacionService {
 
   }
 
-  async registro(registroAutenticacionDto: RegistroAutenticacionDto, fotoPerfil: Express.Multer.File) {
+  async registro(registroAutenticacionDto: RegistroAutenticacionDto, fotoPerfil?: Express.Multer.File) {
     const usuarioExistente = await this.usuarioModel.findOne({
       $or: [
         {email: registroAutenticacionDto.email},
@@ -68,13 +68,25 @@ export class AutenticacionService {
 
     const passwordHash = await bcrypt.hash(registroAutenticacionDto.password, 10)
 
-    const resultadoCloudinary: any = await this.cloudinaryService.uploadImage(fotoPerfil);
+    let fotoPerfilUrl: string | null = null;
 
-    const usuario = await this.usuarioModel.create({
+    if(fotoPerfil) {
+      const resultadoCloudinary: any = await this.cloudinaryService.uploadImage(fotoPerfil);
+
+      fotoPerfilUrl = resultadoCloudinary.secure_url;
+    }
+
+    
+    const usuarioData: any = {
       ...registroAutenticacionDto,
-      password: passwordHash,
-      foto_perfil: resultadoCloudinary.secure_url
-    });
+      password: passwordHash
+    }
+
+    if(fotoPerfilUrl) {
+      usuarioData.foto_perfil = fotoPerfilUrl;
+    }
+
+    const usuario = await this.usuarioModel.create(usuarioData);
 
     return usuario;
   }
