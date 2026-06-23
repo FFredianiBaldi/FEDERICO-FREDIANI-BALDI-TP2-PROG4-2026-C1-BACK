@@ -7,13 +7,15 @@ import { Model } from 'mongoose';
 import { Usuario, UsuarioDocument } from 'src/schemas/usuario.schema';
 
 import * as bcrypt from 'bcrypt';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class AutenticacionService {
 
   constructor(
     @InjectModel(Usuario.name)
-    private usuarioModel: Model<UsuarioDocument>
+    private usuarioModel: Model<UsuarioDocument>,
+    private cloudinaryService: CloudinaryService
   ) {}
 
   async login(loginAutenticacionDto: LoginAutenticacionDto) {
@@ -66,10 +68,12 @@ export class AutenticacionService {
 
     const passwordHash = await bcrypt.hash(registroAutenticacionDto.password, 10)
 
+    const resultadoCloudinary: any = await this.cloudinaryService.uploadImage(fotoPerfil);
+
     const usuario = await this.usuarioModel.create({
       ...registroAutenticacionDto,
       password: passwordHash,
-      foto_perfil: fotoPerfil?.filename ?? null
+      foto_perfil: resultadoCloudinary.secure_url
     });
 
     return usuario;

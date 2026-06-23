@@ -9,13 +9,13 @@ export class AutenticacionController {
   constructor(private readonly autenticacionService: AutenticacionService) {}
 
   @Post('login')
-  login(@Body() loginAutenticacionDto: LoginAutenticacionDto) {
+  async login(@Body() loginAutenticacionDto: LoginAutenticacionDto) {
     return this.autenticacionService.login(loginAutenticacionDto);
   }
 
   @Post('registro')
   @UseInterceptors(FileInterceptor('foto_perfil'))
-  registro(@Body() registroAutenticacionDto: RegistroAutenticacionDto, @UploadedFile() fotoPerfil: Express.Multer.File) {
+  async registro(@Body() registroAutenticacionDto: RegistroAutenticacionDto, @UploadedFile() fotoPerfil: Express.Multer.File) {
     return this.autenticacionService.registro(registroAutenticacionDto, fotoPerfil);
   }
 
