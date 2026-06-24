@@ -48,7 +48,8 @@ export class PublicacionesService {
         apellido: usuario.apellido,
         username: usuario.username,
         foto_perfil: usuario.foto_perfil
-      }
+      },
+      activo: true
     }
 
     if(imagenUrl) {
@@ -121,14 +122,17 @@ export class PublicacionesService {
       throw new UnauthorizedException('Usuario no existente')
     }
 
-    if(usuarioId !== publicacion.id && usuario.perfil !== 'administrador') {
+    const esOwner = publicacion.usuarioId === usuarioId;
+    const esAdmin = usuario.perfil === 'administrador';
+
+    if(!esOwner && !esAdmin) {
       throw new UnauthorizedException('Este usuario no tiene permiso de eliminar esta publicacion')
     }
 
     return await this.publicacionModel.findByIdAndUpdate(
       id,
       {activo: false},
-      {new: true}
+      {returnDocument: 'after'}
     )
   }
 

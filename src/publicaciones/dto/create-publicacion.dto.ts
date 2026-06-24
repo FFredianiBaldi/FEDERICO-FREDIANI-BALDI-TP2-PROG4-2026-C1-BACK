@@ -12,7 +12,4 @@ export class CreatePublicacionDto {
 
     @IsString()
     usuarioId!: string;
-
-    @IsBoolean()
-    activo!: boolean;
 }
