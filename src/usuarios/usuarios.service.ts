@@ -25,6 +25,10 @@ export class UsuariosService {
     return await this.usuarioModel.findById(id)
   }
 
+  async findByUsername(username:string) {
+    return await this.usuarioModel.findOne({username});
+  }
+
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return `This action updates a #${id} usuario`;
   }
