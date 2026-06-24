@@ -2,10 +2,10 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Publicacion, PublicacionDocument } from 'src/schemas/publicacion.schema';
+import { Publicacion, PublicacionDocument } from '../schemas/publicacion.schema';
 import { Model } from 'mongoose';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { Usuario, UsuarioDocument } from 'src/schemas/usuario.schema';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 
 @Injectable()
 export class PublicacionesService {
