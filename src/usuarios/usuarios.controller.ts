@@ -19,7 +19,12 @@ export class UsuariosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usuariosService.findOne(+id);
+    return this.usuariosService.findOne(id);
+  }
+
+  @Get('username/:username')
+    findByUsername(@Param('username') username: string) {
+      return this.usuariosService.findByUsername(username);
   }
 
   @Patch(':id')

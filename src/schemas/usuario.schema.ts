@@ -10,7 +10,7 @@ export type UsuarioDocument = HydratedDocument<Usuario>;
 export class Usuario {
     @Prop({
         required: true,
-        trime: true
+        trim: true
     })
     nombre!: string
 

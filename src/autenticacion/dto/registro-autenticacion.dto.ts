@@ -24,5 +24,5 @@ export class RegistroAutenticacionDto {
     biografia?: string;
 
     @IsString()
-    perfil: string = 'usuario';  
+    perfil: string = 'usuario';
 }
