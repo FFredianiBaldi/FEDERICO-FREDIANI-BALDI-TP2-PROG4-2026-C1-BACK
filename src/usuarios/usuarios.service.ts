@@ -4,8 +4,8 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 import { Model } from 'mongoose';
-import { RegistroAutenticacionDto } from 'src/autenticacion/dto/registro-autenticacion.dto';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsuariosService {
