@@ -4,6 +4,7 @@ import { UsuariosController } from './usuarios.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Usuario, UsuarioSchema } from '../schemas/usuario.schema';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { Publicacion, PublicacionSchema } from 'src/schemas/publicacion.schema';
 
 @Module({
   controllers: [UsuariosController],
@@ -14,6 +15,10 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
       {
         name: Usuario.name,
         schema: UsuarioSchema
+      },
+      {
+        name: Publicacion.name,
+        schema: PublicacionSchema
       }
     ])
   ]

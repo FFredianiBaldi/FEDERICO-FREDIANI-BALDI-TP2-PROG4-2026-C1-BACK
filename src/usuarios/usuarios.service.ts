@@ -6,6 +6,7 @@ import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 import { Model } from 'mongoose';
 import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { PublicacionDocument } from 'src/schemas/publicacion.schema';
 
 @Injectable()
 export class UsuariosService {
@@ -13,6 +14,7 @@ export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name)
     private usuarioModel: Model<UsuarioDocument>,
+    private publicacionModel: Model<PublicacionDocument>,
     private cloudinaryService: CloudinaryService
   ) {}
 
@@ -81,6 +83,18 @@ export class UsuariosService {
       updateData,
       {new: true}
     );
+
+    await this.publicacionModel.updateMany(
+      {usuarioId: id},
+      {
+        $set: {
+          "usuario.nombre": usuarioActualizado?.nombre,
+          "usuario.apellido": usuarioActualizado?.apellido,
+          "usuario.username": usuarioActualizado?.username,
+          "usuario.foto_perfil": usuarioActualizado?.foto_perfil,
+        }
+      }
+    )
     
     return usuarioActualizado;
 
