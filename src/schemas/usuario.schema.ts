@@ -50,9 +50,10 @@ export class Usuario {
     biografia?: string;
 
     @Prop({
-        default: 'usuario'
+        default: 'usuario',
+        enum: ['usuario', 'administrador']
     })
-    perfil?: string;
+    perfil?: 'usuario' | 'administrador';
 
     @Prop({
         required: false,
