@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { RegistroAutenticacionDto } from 'src/autenticacion/dto/registro-autenticacion.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -28,8 +30,10 @@ export class UsuariosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(+id, updateUsuarioDto);
+  @UseInterceptors(FileInterceptor('foto_perfil'))
+  update(@Param('id') id: string, @Body() updateUsuarioDto: Partial<RegistroAutenticacionDto>, @UploadedFile() fotoPerfil: Express.Multer.File)
+  {
+    return this.usuariosService.update(id, updateUsuarioDto, fotoPerfil);
   }
 
   @Delete(':id')
