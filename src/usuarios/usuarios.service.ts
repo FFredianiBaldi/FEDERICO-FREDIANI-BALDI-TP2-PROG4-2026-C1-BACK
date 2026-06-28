@@ -6,7 +6,7 @@ import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 import { Model } from 'mongoose';
 import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { PublicacionDocument } from 'src/schemas/publicacion.schema';
+import { PublicacionDocument } from '../schemas/publicacion.schema';
 
 @Injectable()
 export class UsuariosService {
