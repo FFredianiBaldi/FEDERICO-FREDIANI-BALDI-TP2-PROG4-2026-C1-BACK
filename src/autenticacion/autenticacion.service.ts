@@ -63,7 +63,7 @@ export class AutenticacionService {
     });
 
     if(usuarioExistente) {
-      throw new Error('El usuario ya existe');
+      throw new BadRequestException('El usuario ya existe');
     }
 
     const passwordHash = await bcrypt.hash(registroAutenticacionDto.password, 10)
