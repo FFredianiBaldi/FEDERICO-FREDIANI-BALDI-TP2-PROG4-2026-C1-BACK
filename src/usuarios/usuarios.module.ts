@@ -3,8 +3,8 @@ import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Usuario, UsuarioSchema } from '../schemas/usuario.schema';
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
-import { Publicacion, PublicacionSchema } from 'src/schemas/publicacion.schema';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { Publicacion, PublicacionSchema } from '../schemas/publicacion.schema';
 
 @Module({
   controllers: [UsuariosController],
