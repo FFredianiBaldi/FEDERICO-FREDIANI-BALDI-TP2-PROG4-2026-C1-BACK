@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Upl
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { RegistroAutenticacionDto } from 'src/autenticacion/dto/registro-autenticacion.dto';
+import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('usuarios')
