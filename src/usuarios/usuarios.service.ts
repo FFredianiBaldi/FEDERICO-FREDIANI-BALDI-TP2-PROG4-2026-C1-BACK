@@ -6,7 +6,7 @@ import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 import { Model } from 'mongoose';
 import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { PublicacionDocument } from '../schemas/publicacion.schema';
+import { Publicacion, PublicacionDocument } from '../schemas/publicacion.schema';
 
 @Injectable()
 export class UsuariosService {
@@ -14,6 +14,7 @@ export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name)
     private usuarioModel: Model<UsuarioDocument>,
+    @InjectModel(Publicacion.name)
     private publicacionModel: Model<PublicacionDocument>,
     private cloudinaryService: CloudinaryService
   ) {}
