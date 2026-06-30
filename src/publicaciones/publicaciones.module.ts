@@ -5,12 +5,18 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Publicacion, PublicacionSchema } from '../schemas/publicacion.schema';
 import { Usuario, UsuarioSchema } from '../schemas/usuario.schema';
+import { ComentariosModule } from './comentarios/comentarios.module';
 
 @Module({
-  controllers: [PublicacionesController],
-  providers: [PublicacionesService],
+  controllers: [
+    PublicacionesController
+  ],
+  providers: [
+    PublicacionesService
+  ],
   imports: [
     CloudinaryModule,
+    ComentariosModule,
     MongooseModule.forFeature([
       {
         name: Publicacion.name,

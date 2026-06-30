@@ -1,15 +1,14 @@
 import {IsString} from "class-validator";
 
 
-export class CreatePublicacionDto {
-    @IsString()
-    titulo!: string;
+export class CreateComentarioDto {
 
     @IsString()
     contenido?: string = '';
 
-    likes:any[] = [];
-
     @IsString()
     usuarioId!: string;
+
+    @IsString()
+    publicacionId!: string;
 }
