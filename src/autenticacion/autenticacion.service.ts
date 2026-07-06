@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginAutenticacionDto } from './dto/login-autenticacion.dto';
 import { RegistroAutenticacionDto } from './dto/registro-autenticacion.dto';
@@ -15,7 +16,8 @@ export class AutenticacionService {
   constructor(
     @InjectModel(Usuario.name)
     private usuarioModel: Model<UsuarioDocument>,
-    private cloudinaryService: CloudinaryService
+    private cloudinaryService: CloudinaryService,
+    private jwtService: JwtService
   ) {}
 
   async login(loginAutenticacionDto: LoginAutenticacionDto) {
@@ -50,7 +52,9 @@ export class AutenticacionService {
       )
     }
 
-    return usuario;
+    const access_token = await this.getJwt(usuario)
+
+    return {usuario, token: access_token};
 
   }
 
@@ -87,8 +91,48 @@ export class AutenticacionService {
     }
 
     const usuario = await this.usuarioModel.create(usuarioData);
+    const access_token = await this.getJwt(usuario);
+    return {usuario, token: access_token};
+  }
 
-    return usuario;
+  async getJwt(usuario: any) {
+    const data = {
+      username: usuario.username,
+      email: usuario.email,
+      perfil: usuario.perfil
+    }
+    return await this.jwtService.signAsync(data);
+  }
+
+  async authorize(token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+
+      return {
+        valid: true
+      }
+    } catch(error) {
+      console.error(error);
+      throw new UnauthorizedException('Token invalido o expirado');
+    }
+  }
+
+  async refresh(token: string) {
+    try {
+      console.log('TOKEN:',token)
+      const payload = await this.jwtService.verifyAsync(token);
+      console.log('PAYLOAD:', payload)
+      const usuario = await this.usuarioModel.findOne({username: payload.username})
+      if(!usuario) {
+        throw new UnauthorizedException('Usuario no encontrado');
+      }
+      const nuevoToken = await this.getJwt(usuario);
+
+      return {usuario, token: nuevoToken}
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException('Token invalido o expirado');
+    }
   }
 
   findAll() {
