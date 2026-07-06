@@ -60,6 +60,11 @@ export class Usuario {
         default: undefined
     })
     foto_perfil?: string;
+
+    @Prop({
+        required: true
+    })
+    activo!: boolean;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

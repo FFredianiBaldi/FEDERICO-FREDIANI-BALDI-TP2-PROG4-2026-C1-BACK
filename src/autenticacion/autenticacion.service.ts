@@ -83,7 +83,8 @@ export class AutenticacionService {
     
     const usuarioData: any = {
       ...registroAutenticacionDto,
-      password: passwordHash
+      password: passwordHash,
+      activo: true
     }
 
     if(fotoPerfilUrl) {

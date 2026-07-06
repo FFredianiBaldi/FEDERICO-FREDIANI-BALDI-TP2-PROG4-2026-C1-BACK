@@ -26,7 +26,7 @@ export class UsuariosService {
   }
 
   findAll() {
-    return `This action returns all usuarios`;
+    return this.usuarioModel.find().select('-password').exec();
   }
 
   async findOne(id: string) {
