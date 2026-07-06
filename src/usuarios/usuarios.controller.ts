@@ -4,8 +4,8 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/guards/jwt-auth/jwt-auth.guard';
-import { AdminGuard } from 'src/guards/admin/admin.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth/jwt-auth.guard';
+import { AdminGuard } from '../guards/admin/admin.guard';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -40,7 +40,8 @@ export class UsuariosController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+    return this.usuariosService.remove(id);
   }
 }

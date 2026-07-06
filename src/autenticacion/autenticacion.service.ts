@@ -41,6 +41,10 @@ export class AutenticacionService {
       )
     }
 
+    if(!usuario.activo) {
+      throw new UnauthorizedException('Usuario inhabilitado');
+    }
+
     const passwordValida = await bcrypt.compare(
       loginAutenticacionDto.password,
       usuario.password

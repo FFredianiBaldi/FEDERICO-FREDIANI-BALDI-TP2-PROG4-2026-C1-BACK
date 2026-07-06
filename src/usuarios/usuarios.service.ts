@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -114,7 +114,17 @@ export class UsuariosService {
     return await this.jwtService.signAsync(data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: string) {
+    const usuario = await this.usuarioModel.findById(id);
+
+    if(!usuario) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    usuario.activo = !usuario.activo;
+
+    await usuario.save();
+
+    return usuario;
   }
 }
