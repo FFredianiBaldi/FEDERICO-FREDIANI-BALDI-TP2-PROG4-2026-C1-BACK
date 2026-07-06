@@ -33,4 +33,14 @@ export class AutenticacionController {
   remove(@Param('id') id: string) {
     return this.autenticacionService.remove(+id);
   }
+
+  @Post('authorize')
+  async authorize(@Body('token') token: string) {
+    return this.autenticacionService.authorize(token);
+  }
+
+  @Post('refresh')
+  async refresh(@Body('token') token: string) {
+    return this.autenticacionService.refresh(token);
+  }
 }

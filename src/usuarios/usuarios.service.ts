@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -16,7 +17,8 @@ export class UsuariosService {
     private usuarioModel: Model<UsuarioDocument>,
     @InjectModel(Publicacion.name)
     private publicacionModel: Model<PublicacionDocument>,
-    private cloudinaryService: CloudinaryService
+    private cloudinaryService: CloudinaryService,
+    private jwtService: JwtService
   ) {}
 
   create(createUsuarioDto: CreateUsuarioDto) {
@@ -97,8 +99,19 @@ export class UsuariosService {
       }
     )
     
-    return usuarioActualizado;
+    const access_token = this.getJwt(usuarioActualizado);
 
+    return {usuario: usuarioActualizado, token: access_token};
+
+  }
+
+  async getJwt(usuario: any) {
+    const data = {
+      username: usuario.username,
+      email: usuario.email,
+      perfil: usuario.perfil
+    }
+    return await this.jwtService.signAsync(data);
   }
 
   remove(id: number) {
