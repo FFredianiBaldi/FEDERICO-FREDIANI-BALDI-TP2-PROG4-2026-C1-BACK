@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autenticacion.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../guards/jwt-auth/jwt-auth.guard';
+import { AdminGuard } from '../guards/admin/admin.guard';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -15,6 +17,7 @@ export class UsuariosController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, AdminGuard)
   findAll() {
     return this.usuariosService.findAll();
   }
@@ -37,7 +40,8 @@ export class UsuariosController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+    return this.usuariosService.remove(id);
   }
 }
