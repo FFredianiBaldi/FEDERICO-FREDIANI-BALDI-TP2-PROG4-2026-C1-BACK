@@ -19,6 +19,15 @@ export class PublicacionesController {
     return this.publicacionesService.findAll(offset, limit, sortBy, order);
   }
 
+  @Get('usuario/:usuarioId')
+  async findByUsuario(
+    @Param('usuarioId') usuarioId: string,
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset:number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit:number
+  ) {
+    return this.publicacionesService.findByUsuario(usuarioId, offset, limit);
+  }
+
   @Post('like')
   async like(@Body('usuarioId') usuarioId: string, @Body('id') id:string) {
     return this.publicacionesService.like(usuarioId, id);

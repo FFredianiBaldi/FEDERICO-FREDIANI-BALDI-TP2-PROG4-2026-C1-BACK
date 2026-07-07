@@ -101,6 +101,19 @@ export class PublicacionesService {
       .limit(limit)
   }
 
+  async findByUsuario(usuarioId:string, offset:number, limit:number) {
+    return await this.publicacionModel
+      .find({
+        usuarioId,
+        activo:true
+      })
+      .sort({
+        createdAt: -1
+      })
+      .skip(offset)
+      .limit(limit)
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} publicacione`;
   }
