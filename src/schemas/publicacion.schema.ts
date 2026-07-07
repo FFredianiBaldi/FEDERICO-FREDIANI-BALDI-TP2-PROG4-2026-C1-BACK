@@ -27,10 +27,13 @@ export class Publicacion {
     imagen?: string;
 
     @Prop({
-        type:[String],
+        type:[],
         default: [],
     })
-    likes!: string[];
+    likes!: [{
+        usuarioId:string,
+        fecha: Date
+    }];
 
     @Prop({
         required: true
