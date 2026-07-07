@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Comentario, ComentarioDocument } from '../schemas/comentario.schema';
 import { Model } from 'mongoose';
 import { Publicacion, PublicacionDocument } from '../schemas/publicacion.schema';
+import { Usuario, UsuarioDocument } from '../schemas/usuario.schema';
 
 @Injectable()
 export class EstadisticasService {
@@ -14,7 +15,10 @@ export class EstadisticasService {
     private comentarioModel: Model<ComentarioDocument>,
 
     @InjectModel(Publicacion.name)
-    private publicacionModel: Model<PublicacionDocument>
+    private publicacionModel: Model<PublicacionDocument>,
+
+    @InjectModel(Usuario.name)
+    private usuarioModel: Model<UsuarioDocument>
   ) {}
 
   publicacionesPorUsuario(desde?: string, hasta?: string) {
@@ -238,6 +242,63 @@ export class EstadisticasService {
       }
 
 
+    ]);
+
+  }
+
+  async ingresoPorUsuario() {
+    return this.usuarioModel.find(
+      {activo:true},
+      {
+        username: 1,
+        nombre: 1,
+        apellido: 1,
+        ingresos: 1
+      }
+    )
+  }
+
+  async visitasPorUsuario() {
+    return this.usuarioModel.find(
+      {activo: true},
+      {
+        username: 1,
+        visitas: 1
+      }
+    )
+  }
+
+  async likesPorDia(desde?: Date, hasta?: Date) {
+
+    const match: any = {};
+
+    if(desde && hasta) {
+      match['likes.fecha'] = {
+        $gte: desde,
+        $lte: hasta
+      };
+    }
+
+    return this.publicacionModel.aggregate([
+      {
+        $unwind: '$likes'
+      },
+      {
+        $match: match
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$likes.fecha'
+            }
+          },
+          cantidad: {
+            $sum: 1
+          }
+        }
+      }
     ]);
 
   }

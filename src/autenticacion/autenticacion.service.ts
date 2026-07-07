@@ -56,6 +56,9 @@ export class AutenticacionService {
       )
     }
 
+    usuario.ingresos += 1;
+    usuario.save();
+
     const access_token = await this.getJwt(usuario)
 
     return {usuario, token: access_token};

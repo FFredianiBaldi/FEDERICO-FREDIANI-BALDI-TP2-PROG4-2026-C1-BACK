@@ -65,6 +65,16 @@ export class Usuario {
         required: true
     })
     activo!: boolean;
+
+    @Prop({
+        default: 0
+    })
+    ingresos!: number;
+
+    @Prop({
+        default: 0
+    })
+    visitas!: number;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

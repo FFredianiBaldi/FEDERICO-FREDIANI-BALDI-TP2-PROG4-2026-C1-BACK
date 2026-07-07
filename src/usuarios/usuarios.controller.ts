@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards, Req } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -6,6 +6,7 @@ import { RegistroAutenticacionDto } from '../autenticacion/dto/registro-autentic
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../guards/jwt-auth/jwt-auth.guard';
 import { AdminGuard } from '../guards/admin/admin.guard';
+import type { Request } from 'express';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -24,12 +25,14 @@ export class UsuariosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+
     return this.usuariosService.findOne(id);
   }
 
   @Get('username/:username')
-    findByUsername(@Param('username') username: string) {
-      return this.usuariosService.findByUsername(username);
+    findByUsername(@Param('username') username: string, @Req() req: Request) {
+      const authHeader = req.headers.authorization;
+      return this.usuariosService.findByUsername(username, authHeader);
   }
 
   @Patch(':id')

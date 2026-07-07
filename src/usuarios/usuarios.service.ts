@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -30,10 +30,36 @@ export class UsuariosService {
   }
 
   async findOne(id: string) {
-    return await this.usuarioModel.findById(id)
+    return await this.usuarioModel.findById(id);
   }
 
-  async findByUsername(username:string) {
+  async findByUsername(username:string, authHeader?:string) {
+
+    const usuarioVisitado = await this.usuarioModel.findOne({username});
+
+    if(!usuarioVisitado) {
+      throw new NotFoundException('El usuario no fue encontrado');
+    }
+
+    const token = authHeader?.replace('Bearer ', '');
+
+    if(!token) {
+      throw new UnauthorizedException('Necesita estar registrado para ver el perfil');
+    }
+
+    const payload = this.jwtService.verify(token);
+    const usuarioSolicitante = await this.usuarioModel.findOne({username: payload.username})
+    
+    if(!usuarioSolicitante) {
+      throw new NotFoundException('Usuario solicitante no encontrado')
+    }
+
+
+    if(usuarioSolicitante.id !== usuarioVisitado.id) {
+      usuarioVisitado.visitas += 1;
+      usuarioVisitado.save();
+    }
+
     return await this.usuarioModel.findOne({username});
   }
 

@@ -35,4 +35,28 @@ export class EstadisticasController {
   ) {
     return this.estadisticasService.comentariosPorPublicacion(desde, hasta);
   }
+
+  @Get('ingreso-por-usuario')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  ingresoPorUsuario() {
+    return this.estadisticasService.ingresoPorUsuario();
+  }
+
+  @Get('visitas-por-usuario')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  visitasPorUsuario() {
+    return this.estadisticasService.visitasPorUsuario();
+  }
+
+  @Get('likes-por-dia')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  likesPorDia(
+    @Query('desde') desde?: string,
+    @Query('hasta') hasta?: string
+  ) {
+    return this.estadisticasService.likesPorDia(
+      desde ? new Date(desde) : undefined,
+      hasta ? new Date(hasta) : undefined
+    );
+  }
 }

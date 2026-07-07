@@ -156,15 +156,20 @@ export class PublicacionesService {
       throw new NotFoundException('No se encontro la publicacion')
     }
 
-    if(publicacion.likes.includes(usuarioId)) {
+    if(publicacion.likes.some(
+      like => like.usuarioId === usuarioId
+    )) {
       throw new BadRequestException('El usuario ya le dio like a esta publicacion');
     }
 
-    publicacion.likes.push(usuarioId);
+    publicacion.likes.push({
+      usuarioId,
+      fecha: new Date()
+    });
 
     await publicacion.save();
 
-    console.log(publicacion.likes);
+    return publicacion;
   }
 
   async dislike(usuarioId:string, id: string) {
@@ -174,14 +179,16 @@ export class PublicacionesService {
       throw new NotFoundException('No se encontro la publicacion')
     }
 
-    if(!publicacion.likes.includes(usuarioId)) {
+    if(!publicacion.likes.some(
+      like => like.usuarioId === usuarioId
+    )) {
       throw new BadRequestException('El usuario no le dio like a esta publicacion');
     }
 
     return await this.publicacionModel.findByIdAndUpdate(id, 
       {
         $pull: {
-          likes: usuarioId
+          likes: {usuarioId}
         }
       },
       {
